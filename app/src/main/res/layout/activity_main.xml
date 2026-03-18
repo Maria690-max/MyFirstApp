@@ -9,34 +9,6 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:text="@string/main_text"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/text_size_title"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textViewStudent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewStudent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_standard"
-        android:gravity="center"
-        android:text="@string/student_info"
-        android:textColor="@color/text_secondary"
-        android:textSize="@dimen/text_size_body"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
-
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="48dp"
@@ -44,7 +16,7 @@
         android:contentDescription="@string/avatar_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/author"
@@ -59,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@id/menu"
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toTopOf="@id/avatar"
-        tools:text="Нетология. Университет интернет-профессий" />
+        android:text="Нетология. Университет интернет-профессий" />
 
     <TextView
         android:id="@+id/published"
@@ -71,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="@id/author"
         app:layout_constraintTop_toBottomOf="@id/author"
         app:layout_constraintBottom_toBottomOf="@id/avatar"
-        tools:text="21 мая в 18:36" />
+        android:text="21 мая в 18:36" />
 
     <ImageButton
         android:id="@+id/menu"
@@ -100,10 +72,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier"
-        tools:text="Привет, это новая Нетология!
-        Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу.
-        Затем появились курсы по дизайну, разработке, аналитике и управлению.
-        Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов." />
+        android:text="Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов." />
+
+    <LinearLayout
+        android:id="@+id/link_block"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@android:color/darker_gray"
+        android:backgroundTint="#1A000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content">
+
+    <TextView
+        android:id="@+id/link_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        android:text="Новая Нетология: 4 уровня карьеры" />
+
+        <TextView
+            android:id="@+id/link_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:text="netology.ru" />
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
