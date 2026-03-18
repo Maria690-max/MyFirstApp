@@ -133,7 +133,7 @@
             android:textSize="14sp"
             android:textColor="@color/purple_500"
             android:layout_marginEnd="32dp"
-            tools:text="150" />
+            android:text="150" />
 
         <ImageButton
             android:id="@+id/share"
@@ -152,7 +152,7 @@
             android:textSize="14sp"
             android:textColor="@color/purple_500"
             android:layout_marginEnd="32dp"
-            tools:text="25" />
+            android:text="25" />
 
         <ImageButton
             android:id="@+id/views_icon"
@@ -170,10 +170,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
-            tools:text="5.7K" />
+            android:text="5.7K" />
     </LinearLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
