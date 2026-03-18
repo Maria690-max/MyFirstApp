@@ -3,4 +3,6 @@
     <string name="app_name">МоёПервоеПриложение</string>
     <string name="main_text">Моё первое приложение</string>
     <string name="student_info">Студентка: Плешивцева\nГруппа: 3.2ИСиП-1</string>
+    <string name="avatar_description">Аватар автора</string>
+    <string name="menu_description">Описание меню</string>
 </resources>
