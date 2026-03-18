@@ -4,4 +4,8 @@
     <string name="student_info">Student: Your Name Group: Your Group</string>
     <string name="avatar_description">avatar_description</string>
     <string name="menu_description">menu_description</string>
+    <string name="like_description">like_description</string>
+    <string name="share_description">share_description</string>
+    <string name="views_description">views_description</string>
+
 </resources>

@@ -105,6 +105,75 @@
             android:text="netology.ru" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/actions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/link_block">
+
+        <ImageButton
+            android:id="@+id/like"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/favorite_border"
+            android:contentDescription="@string/like_description"
+            android:layout_marginEnd="16dp"
+            app:tint="@color/purple_500" />
+
+        <TextView
+            android:id="@+id/like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/purple_500"
+            android:layout_marginEnd="32dp"
+            tools:text="150" />
+
+        <ImageButton
+            android:id="@+id/share"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/share"
+            android:contentDescription="@string/share_description"
+            android:layout_marginEnd="16dp"
+            app:tint="@color/purple_500" />
+
+        <TextView
+            android:id="@+id/share_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/purple_500"
+            android:layout_marginEnd="32dp"
+            tools:text="25" />
+
+        <ImageButton
+            android:id="@+id/views_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/visibility_svg_icon"
+            android:contentDescription="@string/views_description"
+            android:layout_marginEnd="8dp"
+            app:tint="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/views_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="5.7K" />
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

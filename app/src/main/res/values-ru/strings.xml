@@ -5,4 +5,7 @@
     <string name="student_info">Студентка: Плешивцева\nГруппа: 3.2ИСиП-1</string>
     <string name="avatar_description">Аватар автора</string>
     <string name="menu_description">Описание меню</string>
+    <string name="like_description">Как описание</string>
+    <string name="share_description">Общее описание</string>
+    <string name="views_description">Видимое описание</string>
 </resources>
