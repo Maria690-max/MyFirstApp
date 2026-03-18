@@ -16,7 +16,7 @@
         android:contentDescription="@string/avatar_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile_big_5806599360f247e0de587feafc3b6055" />
+        app:srcCompat="@drawable/profile_big" />
 
     <TextView
         android:id="@+id/author"

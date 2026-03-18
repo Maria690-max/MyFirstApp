@@ -7,6 +7,10 @@ android {
     namespace = "ru.pleshivtseva.myfirstapp"
     compileSdk {
         version = release(36)
+        buildFeatures {
+            viewBinding = true
+        }
+
     }
 
     defaultConfig {
