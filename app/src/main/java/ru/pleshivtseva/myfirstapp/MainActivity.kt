@@ -69,10 +69,10 @@ class MainActivity : AppCompatActivity() {
                 post = post.copy(
                     shares = post.shares + 1
                 )
-
+                bindPost(post)
+                Toast.makeText(this@MainActivity, "Репост +1", Toast.LENGTH_SHORT).show()
             }
-            bindPost(post)
-            Toast.makeText(this@MainActivity, "Репост +1", Toast.LENGTH_SHORT).show()
+
             menu.setOnClickListener {
                 Toast.makeText(this@MainActivity, "Меню поста", Toast.LENGTH_SHORT).show()
             }
