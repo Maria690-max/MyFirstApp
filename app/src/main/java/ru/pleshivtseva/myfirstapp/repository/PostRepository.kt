@@ -1,15 +1,14 @@
 package ru.pleshivtseva.myfirstapp.repository
+
 import androidx.lifecycle.LiveData
 import ru.pleshivtseva.myfirstapp.dto.Post
-interface PostRepository {       fun get(): LiveData<Post>
 
-    // Лайк/дизлайк
-    fun like()
+interface PostRepository {
+    fun getAll(): LiveData<List<Post>>
+    fun likeById(id: Long)
+    fun shareById(id: Long)
+    fun increaseViews(id: Long)
 
-    // Репост (увеличение счетчика)
-    fun share()
-
-    // Изменение просмотров (может пригодиться позже)
-    fun increaseViews()
 }
+
 
