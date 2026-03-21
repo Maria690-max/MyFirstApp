@@ -1,5 +1,7 @@
 package ru.pleshivtseva.myfirstapp.adapter
 
+import android.view.View
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.pleshivtseva.myfirstapp.R
 import ru.pleshivtseva.myfirstapp.databinding.CardPostBinding
@@ -8,8 +10,7 @@ import java.text.DecimalFormat
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val onLikeClickListener: (Post) -> Unit,
-    private val onShareClickListener: (Post) -> Unit
+    private val listener: OnPostInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -22,35 +23,52 @@ class PostViewHolder(
             shareCount.text = formatCount(post.shares)
             viewsCount.text = formatCount(post.views)
 
-            if (post.likedByMe) {
-                like.setImageResource(R.drawable.like_filled)
-            } else {
-                like.setImageResource(R.drawable.like_border)
-            }
+
+            like.setImageResource(
+                if (post.likedByMe) R.drawable.like_filled
+                else R.drawable.like_border
+            )
+
 
             like.setOnClickListener {
-                onLikeClickListener(post)
+                listener.onLike(post)
             }
 
             share.setOnClickListener {
-                onShareClickListener(post)
-            }
-
-            menu.setOnClickListener {
-                android.widget.Toast.makeText(
-                    itemView.context,
-                    "Меню поста ${post.id}",
-                    android.widget.Toast.LENGTH_SHORT
-                ).show()
+                listener.onShare(post)
             }
 
             avatar.setOnClickListener {
-                android.widget.Toast.makeText(
-                    itemView.context,
-                    "Профиль автора ${post.author}",
-                    android.widget.Toast.LENGTH_SHORT
-                ).show()
+                listener.onAvatarClick(post)
             }
+
+
+            menu.setOnClickListener { view ->
+                showPopupMenu(view, post)
+            }
+        }
+    }
+
+    private fun showPopupMenu(anchor: View, post: Post) {
+        PopupMenu(anchor.context, anchor).apply {
+
+            inflate(R.menu.post_menu)
+
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        listener.onEdit(post)
+                        true
+                    }
+                    R.id.remove -> {
+                        listener.onRemove(post)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            show()
         }
     }
 
@@ -61,7 +79,7 @@ class PostViewHolder(
                 if (millions % 1.0 == 0.0) {
                     "${millions.toInt()}M"
                 } else {
-                    java.text.DecimalFormat(".").format(millions) + "M"
+                    DecimalFormat(".").format(millions) + "M"
                 }
             }
             count >= 10_000 -> "${count / 1000}K"
@@ -70,10 +88,11 @@ class PostViewHolder(
                 if (thousands % 1.0 == 0.0) {
                     "${thousands.toInt()}K"
                 } else {
-                    java.text.DecimalFormat(".").format(thousands) + "K"
+                    DecimalFormat(".").format(thousands) + "K"
                 }
             }
             else -> count.toString()
         }
     }
 }
+

@@ -7,5 +7,10 @@
     <string name="like_description">like_description</string>
     <string name="share_description">share_description</string>
     <string name="views_description">views_description</string>
-
+    <string name="edit_post">Edit</string>
+    <string name="remove_post">Delete</string>
+    <string name="post_hint">What’s new with you?</string>
+    <string name="save_post">To publish</string>
+    <string name="cancel_edit_hint">Editing...</string>
+    <string name="cancel_edit">Cancel</string>
 </resources>
