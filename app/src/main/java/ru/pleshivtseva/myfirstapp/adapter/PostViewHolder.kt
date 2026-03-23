@@ -19,17 +19,15 @@ class PostViewHolder(
             published.text = post.published
             content.text = post.content
 
-            likeCount.text = formatCount(post.likes)
-            shareCount.text = formatCount(post.shares)
-            viewsCount.text = formatCount(post.views)
+            // Для кнопки лайка используем isChecked и текст
+            like.isChecked = post.likedByMe
+            like.text = formatCount(post.likes)
 
+            // Для репоста и просмотров - только текст
+            share.text = formatCount(post.shares)
+            views.text = formatCount(post.views)
 
-            like.setImageResource(
-                if (post.likedByMe) R.drawable.like_filled
-                else R.drawable.like_border
-            )
-
-
+            // Обработчики кликов
             like.setOnClickListener {
                 listener.onLike(post)
             }
@@ -41,7 +39,6 @@ class PostViewHolder(
             avatar.setOnClickListener {
                 listener.onAvatarClick(post)
             }
-
 
             menu.setOnClickListener { view ->
                 showPopupMenu(view, post)
@@ -79,7 +76,11 @@ class PostViewHolder(
                 if (millions % 1.0 == 0.0) {
                     "${millions.toInt()}M"
                 } else {
-                    DecimalFormat(".").format(millions) + "M"
+                    // ИспользуемLocale.US для точки как разделителя десятичных разрядов
+                    DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
+                        maximumFractionDigits = 1
+                        minimumFractionDigits = 1
+                    }.format(millions) + "M"
                 }
             }
             count >= 10_000 -> "${count / 1000}K"
@@ -88,11 +89,16 @@ class PostViewHolder(
                 if (thousands % 1.0 == 0.0) {
                     "${thousands.toInt()}K"
                 } else {
-                    DecimalFormat(".").format(thousands) + "K"
+                    // Используем Locale.US для точки как разделителя десятичных разрядов
+                    DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
+                        maximumFractionDigits = 1
+                        minimumFractionDigits = 1
+                    }.format(thousands) + "K"
                 }
             }
             else -> count.toString()
         }
     }
 }
+
 
