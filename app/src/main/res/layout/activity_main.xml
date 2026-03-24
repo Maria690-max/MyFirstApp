@@ -68,7 +68,7 @@
         android:padding="12dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/save"
+        app:layout_constraintEnd_toStartOf="@+id/save"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -78,6 +78,17 @@
         android:src="@android:drawable/ic_menu_send"
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/save_post"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Добавляем FloatingActionButton -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="@string/add_post"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

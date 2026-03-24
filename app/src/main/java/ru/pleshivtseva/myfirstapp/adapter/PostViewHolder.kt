@@ -1,12 +1,17 @@
 package ru.pleshivtseva.myfirstapp.adapter
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.pleshivtseva.myfirstapp.R
 import ru.pleshivtseva.myfirstapp.databinding.CardPostBinding
+import ru.pleshivtseva.myfirstapp.databinding.ItemVideoBinding
 import ru.pleshivtseva.myfirstapp.dto.Post
-import java.text.DecimalFormat
 
 class PostViewHolder(
     private val binding: CardPostBinding,
@@ -19,27 +24,34 @@ class PostViewHolder(
             published.text = post.published
             content.text = post.content
 
-            // Для кнопки лайка используем isChecked и текст
             like.isChecked = post.likedByMe
             like.text = formatCount(post.likes)
-
-            // Для репоста и просмотров - только текст
             share.text = formatCount(post.shares)
             views.text = formatCount(post.views)
 
-            // Обработчики кликов
-            like.setOnClickListener {
-                listener.onLike(post)
+            // Обработка видео
+            if (post.video.isNullOrBlank()) {
+                // Если видео нет, скрываем контейнер
+                videoContainer.removeAllViews()
+                videoContainer.visibility = View.GONE
+            } else {
+                // Если есть, показываем и наполняем
+                videoContainer.visibility = View.VISIBLE
+                videoContainer.removeAllViews()
+
+                val videoBinding = ItemVideoBinding.inflate(LayoutInflater.from(itemView.context), videoContainer, true)
+                videoBinding.videoUrl.text = post.video
+
+                // Обработка клика по контейнеру видео
+                videoContainer.setOnClickListener {
+                    openVideo(post.video!!)
+                }
             }
 
-            share.setOnClickListener {
-                listener.onShare(post)
-            }
-
-            avatar.setOnClickListener {
-                listener.onAvatarClick(post)
-            }
-
+            // Обработка кнопок
+            like.setOnClickListener { listener.onLike(post) }
+            share.setOnClickListener { listener.onShare(post) }
+            avatar.setOnClickListener { listener.onAvatarClick(post) }
             menu.setOnClickListener { view ->
                 showPopupMenu(view, post)
             }
@@ -48,10 +60,7 @@ class PostViewHolder(
 
     private fun showPopupMenu(anchor: View, post: Post) {
         PopupMenu(anchor.context, anchor).apply {
-
             inflate(R.menu.post_menu)
-
-
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
@@ -76,8 +85,7 @@ class PostViewHolder(
                 if (millions % 1.0 == 0.0) {
                     "${millions.toInt()}M"
                 } else {
-                    // ИспользуемLocale.US для точки как разделителя десятичных разрядов
-                    DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
+                    java.text.DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
                         maximumFractionDigits = 1
                         minimumFractionDigits = 1
                     }.format(millions) + "M"
@@ -89,14 +97,39 @@ class PostViewHolder(
                 if (thousands % 1.0 == 0.0) {
                     "${thousands.toInt()}K"
                 } else {
-                    // Используем Locale.US для точки как разделителя десятичных разрядов
-                    DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
+                    java.text.DecimalFormat.getNumberInstance(java.util.Locale.US).apply {
                         maximumFractionDigits = 1
                         minimumFractionDigits = 1
                     }.format(thousands) + "K"
                 }
             }
             else -> count.toString()
+        }
+    }
+
+    // Вспомогательная функция для открытия видео по URL
+    private fun openVideo(videoUrl: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+
+        // Получаем список приложений, которые могут обработать Intent
+        val packageManager = itemView.context.packageManager
+        val activities = packageManager.queryIntentActivities(intent, 0)
+
+        // Логируем результат
+        Log.d("VideoIntent", "queryIntentActivities: $activities")
+
+        val resolveInfo = intent.resolveActivity(packageManager)
+        Log.d("VideoIntent", "resolveActivity: $resolveInfo")
+
+        // Проверяем и запускаем
+        if (resolveInfo != null) {
+            try {
+                itemView.context.startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(itemView.context, R.string.error_cannot_open_video, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(itemView.context, R.string.error_no_video_app, Toast.LENGTH_SHORT).show()
         }
     }
 }
