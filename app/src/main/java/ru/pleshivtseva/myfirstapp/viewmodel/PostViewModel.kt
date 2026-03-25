@@ -1,15 +1,20 @@
 package ru.pleshivtseva.myfirstapp.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.pleshivtseva.myfirstapp.dto.Post
 import ru.pleshivtseva.myfirstapp.repository.PostRepository
-import ru.pleshivtseva.myfirstapp.repository.PostRepositoryInMemoryImpl
+import ru.pleshivtseva.myfirstapp.repository.PostRepositoryFileImpl  // или другую реализацию
 
-class PostViewModel : ViewModel() {
 
-    private val repository: PostRepository = PostRepositoryInMemoryImpl()
+class PostViewModel(application: Application) : AndroidViewModel(application) {
+
+    // Используем файловую реализацию с передачей контекста приложения
+    private val repository: PostRepository = PostRepositoryFileImpl(application)
+
+    val data: LiveData<List<Post>> = repository.getAll()
 
     private val empty = Post(
         id = 0,
@@ -18,8 +23,6 @@ class PostViewModel : ViewModel() {
         published = ""
     )
 
-    val data: LiveData<List<Post>> = repository.getAll()
-
     private val _edited = MutableLiveData(empty)
     val edited: LiveData<Post> = _edited
 
@@ -27,11 +30,8 @@ class PostViewModel : ViewModel() {
     val editingMode: LiveData<Boolean> = _editingMode
 
     fun likeById(id: Long) = repository.likeById(id)
-
     fun shareById(id: Long) = repository.shareById(id)
-
     fun increaseViews(id: Long) = repository.increaseViews(id)
-
     fun removeById(id: Long) = repository.removeById(id)
 
     fun save() {
@@ -62,6 +62,7 @@ class PostViewModel : ViewModel() {
         _edited.value = empty
         _editingMode.value = false
     }
+
     fun saveEditedPost(postId: Long, newContent: String) {
         // Получаем текущие данные о посте
         val currentPosts = data.value ?: return
@@ -77,7 +78,7 @@ class PostViewModel : ViewModel() {
         _edited.value = empty
         _editingMode.value = false
     }
-
 }
+
 
 
