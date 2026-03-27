@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import ru.pleshivtseva.myfirstapp.R
 import ru.pleshivtseva.myfirstapp.databinding.FragmentNewPostBinding
@@ -37,6 +37,15 @@ class NewPostFragment : Fragment() {
             binding.edit.setText(existingText)
         }
 
+        // Обработка кнопки "Назад"
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            val text = binding.edit.text.toString()
+            if (text.isNotBlank()) {
+                viewModel.saveDraft(text)
+            }
+            findNavController().popBackStack()
+        }
+
         binding.ok.setOnClickListener {
             val text = binding.edit.text.toString()
             if (text.isBlank()) {
@@ -50,6 +59,7 @@ class NewPostFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
