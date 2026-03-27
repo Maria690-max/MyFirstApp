@@ -8,9 +8,7 @@ import java.util.Date
 import java.util.Locale
 
 class PostRepositoryInMemoryImpl : PostRepository {
-
     private var nextId = 5L
-
     private val currentUserId = 1L
     private val currentUserName = "Я"
 

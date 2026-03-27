@@ -6,128 +6,101 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.pleshivtseva.myfirstapp.dto.Post
+import ru.pleshivtseva.myfirstapp.util.FormatUtils
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
-
 
 class PostRepositoryFileImpl(
     private val context: Context
 ) : PostRepository {
-
     private val gson = Gson()
     private val filename = "posts.json"
-
-    // Тип для десериализации списка постов
     private val type = object : TypeToken<List<Post>>() {}.type
-
-    // Счетчик для генерации ID
     private var nextId = 1L
 
-    // Текущий пользователь
     private val currentUserId = 1L
     private val currentUserName = "Я"
 
-    // Данные в памяти
     private var posts = emptyList<Post>()
     private val _data = MutableLiveData(posts)
 
-    init {
-        // При создании репозитория пытаемся загрузить данные из файла
-        loadData()
-    }
 
     override fun getAll(): LiveData<List<Post>> = _data
-
     override fun likeById(id: Long) {
         posts = posts.map { post ->
-            if (post.id == id) {
+            if (post.id == id)
                 post.copy(
                     likedByMe = !post.likedByMe,
                     likes = if (post.likedByMe) post.likes - 1 else post.likes + 1
                 )
-            } else {
+            else
                 post
-            }
         }
         _data.value = posts
         saveData()
     }
-
     override fun shareById(id: Long) {
         posts = posts.map { post ->
-            if (post.id == id) {
+            if (post.id == id)
                 post.copy(shares = post.shares + 1)
-            } else {
+            else
                 post
-            }
         }
         _data.value = posts
         saveData()
     }
-
     override fun increaseViews(id: Long) {
         posts = posts.map { post ->
-            if (post.id == id) {
+            if (post.id == id)
                 post.copy(views = post.views + 1)
-            } else {
+            else
                 post
-            }
         }
         _data.value = posts
         saveData()
     }
-
     override fun save(post: Post) {
         posts = if (post.id == 0L) {
-            // Создание нового поста
             val newPost = post.copy(
                 id = generateNextId(),
                 author = currentUserName,
                 authorId = currentUserId,
-                published = formatDate(Date()),
+                published = FormatUtils.formatDate(Date()),
                 likedByMe = false,
                 likes = 0,
                 shares = 0,
                 views = 0
             )
             listOf(newPost) + posts
-        } else {
-            // Обновление существующего поста
+        } else
             posts.map { existingPost ->
-                if (existingPost.id == post.id) {
+                if (existingPost.id == post.id)
                     existingPost.copy(content = post.content)
-                } else {
+                else
                     existingPost
-                }
             }
-        }
         _data.value = posts
         saveData()
     }
-
     override fun removeById(id: Long) {
         posts = posts.filter { it.id != id }
         _data.value = posts
         saveData()
     }
 
+    init { loadData() }
     private fun loadData() {
         val file = getPostsFile()
         if (!file.exists()) {
-            // Если файла нет, создаем начальные данные
             createInitialData()
             saveData()
             return
         }
-
         try {
             context.openFileInput(filename).bufferedReader().use { reader ->
                 val loadedPosts: List<Post> = gson.fromJson(reader, type)
                 if (loadedPosts.isNotEmpty()) {
                     posts = loadedPosts
-                    // Вычисляем следующий ID на основе максимального существующего
                     nextId = (posts.maxOfOrNull { it.id } ?: 0) + 1
                     _data.value = posts
                 } else {
@@ -136,13 +109,11 @@ class PostRepositoryFileImpl(
                 }
             }
         } catch (e: Exception) {
-            // В случае ошибки создаем начальные данные
             e.printStackTrace()
             createInitialData()
             saveData()
         }
     }
-
     private fun saveData() {
         try {
             context.openFileOutput(filename, Context.MODE_PRIVATE).bufferedWriter().use { writer ->
@@ -152,9 +123,7 @@ class PostRepositoryFileImpl(
             e.printStackTrace()
         }
     }
-
     private fun getPostsFile(): File = context.filesDir.resolve(filename)
-
     private fun createInitialData() {
         posts = listOf(
             Post(
@@ -196,13 +165,5 @@ class PostRepositoryFileImpl(
         )
         _data.value = posts
     }
-
-
     private fun generateNextId(): Long = nextId++
-
-
-    private fun formatDate(date: Date): String {
-        val format = SimpleDateFormat("d MMM в HH:mm", Locale("ru"))
-        return format.format(date)
-    }
 }

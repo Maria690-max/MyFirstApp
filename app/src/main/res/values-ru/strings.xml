@@ -25,4 +25,6 @@
     <string name="error_no_video_app">ошибка: нет видеоприложения</string>
     <string name="error_cannot_open_video">ошибка, из-за которой невозможно открыть видео</string>
     <string name="share_post_via">Поделиться через</string>
+    <string name="hello_blank_fragment">Привет, пустой фрагмент</string>
+    <string name="post_removed">сообщение удалено</string>
 </resources>
