@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.pleshivtseva.myfirstapp.dto.Post
-import java.text.SimpleDateFormat
+import ru.pleshivtseva.myfirstapp.util.FormatUtils
 import java.util.Date
-import java.util.Locale
 
 class PostRepositorySharedPrefsImpl(
     private val context: Context
@@ -77,7 +76,7 @@ class PostRepositorySharedPrefsImpl(
                 id = nextId++,
                 author = currentUserName,
                 authorId = currentUserId,
-                published = formatDate(Date()),
+                published = FormatUtils.formatDate(Date()),
                 likedByMe = false,
                 likes = 0,
                 shares = 0,
@@ -127,7 +126,6 @@ class PostRepositorySharedPrefsImpl(
     }
 
     private fun createInitialData() {
-        // Аналогично файловой реализации
         posts = listOf(
             Post(
                 id = nextId++,
@@ -141,13 +139,7 @@ class PostRepositorySharedPrefsImpl(
                 views = 5700,
                 video = null
             )
-            // ... остальные посты
         )
         _data.value = posts
-    }
-
-    private fun formatDate(date: Date): String {
-        val format = SimpleDateFormat("d MMM в HH:mm", Locale("ru"))
-        return format.format(date)
     }
 }

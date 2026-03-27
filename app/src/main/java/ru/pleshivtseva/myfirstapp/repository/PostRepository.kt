@@ -1,5 +1,4 @@
 package ru.pleshivtseva.myfirstapp.repository
-
 import androidx.lifecycle.LiveData
 import ru.pleshivtseva.myfirstapp.dto.Post
 
@@ -10,8 +9,6 @@ interface PostRepository {
     fun increaseViews(id: Long)
     fun save(post: Post)
     fun removeById(id: Long)
-
-
 }
 
 
